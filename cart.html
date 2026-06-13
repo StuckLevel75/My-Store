@@ -4,6 +4,7 @@
 <title>Cart</title>
 <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
 <nav>
@@ -19,9 +20,55 @@
 
 <h1>Your Cart</h1>
 
-<p>Cart functionality coming soon.</p>
+<div id="cartItems"></div>
+
+<h2 id="cartTotal">$0.00</h2>
 
 </div>
+
+<script>
+
+let cart =
+JSON.parse(localStorage.getItem("cart")) || [];
+
+const cartItems =
+document.getElementById("cartItems");
+
+let total = 0;
+
+cart.forEach((item,index)=>{
+
+    total += item.price;
+
+    cartItems.innerHTML += `
+        <div class="card">
+            <h3>${item.name}</h3>
+            <p>$${item.price.toFixed(2)}</p>
+
+            <button onclick="removeItem(${index})">
+                Remove
+            </button>
+        </div>
+    `;
+});
+
+document.getElementById("cartTotal")
+.textContent =
+"Total: $" + total.toFixed(2);
+
+function removeItem(index){
+
+    cart.splice(index,1);
+
+    localStorage.setItem(
+        "cart",
+        JSON.stringify(cart)
+    );
+
+    location.reload();
+}
+
+</script>
 
 </body>
 </html>
